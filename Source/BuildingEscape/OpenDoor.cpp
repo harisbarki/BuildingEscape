@@ -32,15 +32,24 @@ void UOpenDoor::BeginPlay()
 
 void UOpenDoor::OpenDoor(float OpenAngle)
 {
-	// Find the owning Actor
-	AActor* Owner = GetOwner();
+	//// Create a rotator
+	//FRotator NewRotation = FRotator(0.0f, OpenAngle, 0.0f);
 
+	//// Set the door rotation
+	//Owner->SetActorRotation(NewRotation);
+
+	OnOpenRequest.Broadcast();
+}
+
+void UOpenDoor::CloseDoor(float OpenAngle)
+{
 	// Create a rotator
 	FRotator NewRotation = FRotator(0.0f, OpenAngle, 0.0f);
 
 	// Set the door rotation
 	Owner->SetActorRotation(NewRotation);
 }
+
 
 
 // Called every frame
@@ -53,7 +62,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
 	}
 	else if (LastDoorOpenTime <= DoorCloseDelay + GetWorld()->GetTimeSeconds()) {
-		OpenDoor(CloseAngle);
+		CloseDoor(CloseAngle);
 	}
 
 }
